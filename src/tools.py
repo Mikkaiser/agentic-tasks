@@ -1,14 +1,16 @@
 from rich.text import Text
+import json
+
 
 text = Text()
 
-tasks_list = ["task 1", "task 2", "task 3", "task 4", "task 5", "task 6", "task 7"]
+tasks_list = []
 completed_tasks = []
 
 
 def define_checklist(tasks):
+    global tasks_list
     tasks_list += tasks
-    return tasks_list
 
 def update_checklist(recent_task):
     completed_tasks.append(recent_task)
@@ -20,6 +22,13 @@ def update_checklist(recent_task):
             text.append(task + "\n", style="bold green")
 
     return text
+
+
+def handle_tool_calls(tool_calls):
+  for tool_call in tool_calls:
+            args = tool_call.function.arguments
+            json_parsing=json.loads(args)
+            define_checklist(json_parsing["tasks"])
 
 
 DEFINE_CHECKLIST_TOOL_JSON = {
@@ -58,3 +67,8 @@ UPDATE_CHECKLIST_TOOL_JSON = {
       }
     }
   }
+
+tools = [
+  DEFINE_CHECKLIST_TOOL_JSON,
+  UPDATE_CHECKLIST_TOOL_JSON
+]

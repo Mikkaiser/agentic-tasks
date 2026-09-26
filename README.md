@@ -1,7 +1,5 @@
 # agentic-tasks
 
-> 🚧 **Work in progress.** The core loop runs end-to-end, but the demo is still rough around the edges.
-
 A small demonstration of how AI agents plan work: the agent breaks a goal into a **checklist of tasks** and then **updates that checklist through tool calls** as it completes each step, rendered live in the terminal.
 
 ## Demo
@@ -23,14 +21,12 @@ Given the prompt *"Make a checklist to brew a cup of tea (3 short steps), then c
 - `src/api.py`: the OpenAI chat loop — sends the conversation, dispatches tool calls, feeds results back until the model is done
 - `src/main.py`: entry point — reads a prompt from the user and runs the agent loop live
 
-## Status
+## Features
 
-- [x] Tool schemas for `define_checklist` and `update_checklist`
-- [x] Live checklist rendering with Rich
-- [x] LLM wired up (OpenAI, tool calling)
-- [x] Agent loop that executes tasks and reports progress
-- [ ] Error handling (bad tool args, API failures, empty checklist)
-- [ ] Support for more than one checklist per session
+- Tool schemas for `define_checklist` and `update_checklist`
+- Live checklist rendering with Rich
+- LLM wired up (OpenAI, tool calling)
+- Agent loop that executes tasks and reports progress
 
 ## Running
 

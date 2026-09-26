@@ -1,17 +1,30 @@
 from dotenv import load_dotenv
 from openai import OpenAI
-from tools import tools, handle_tool_calls, tasks_list
+from tools import tools, handle_tool_calls, update_user_interface
 
 load_dotenv()
 openai = OpenAI()
 
-history = []
+history = [
+    {
+        "role": "system",
+        "content": (
+            "You are a task-executing agent. For any multi-step user request, first call "
+            "define_checklist with the list of tasks you will perform. Then, before moving on "
+            "to each task, briefly tell the user what you're doing (e.g. 'Done with task 2, "
+            "moving to task 3'), and once a task is finished call update_checklist with its "
+            "index. Continue until every task is marked done."
+        )
+    }
+]
 
-def call_llm(user_prompt):
-    history.append({
-        "role":"user",
-        "content": user_prompt
-    })
+
+def call_llm(user_prompt = None):
+    if user_prompt:
+        history.append({
+            "role":"user",
+            "content": user_prompt
+        })
 
     response = openai.chat.completions.create(
         model="gpt-5.4-mini",
@@ -22,15 +35,22 @@ def call_llm(user_prompt):
     response_message = response.choices[0].message
     history.append({
         "role":response_message.role,
-        "content": response_message.content
+        "content": response_message.content,
+        "tool_calls": response_message.tool_calls
     })
-    
-    full_response = []
+
+
+    if response_message.content:
+        update_user_interface(response_message.content)
 
     if response_message.tool_calls:
-        handle_tool_calls(response_message.tool_calls)
-        full_response.append({"From tool: ": tasks_list})
-    if response_message.content:
-        full_response.append({"From message: ": response_message.content})
-    
-    return full_response
+        tool_results = handle_tool_calls(response_message.tool_calls)
+
+        for result in tool_results:
+            history.append({
+                "role": "tool",
+                "tool_call_id": result["tool_call_id"],
+                "content": str(result["content"])
+            })
+
+        call_llm()

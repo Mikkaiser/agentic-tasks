@@ -1,7 +1,7 @@
 [project]
 name = "agentic-tasks"
 version = "0.1.0"
-description = "WIP demo: AI agents planning a task checklist and updating it with tool calls"
+description = "Demo of AI agents planning a task checklist and updating it live via tool calls"
 authors = [
     { name = "Mikkaiser", email = "mikaelrsimoes19@gmail.com" }
 ]

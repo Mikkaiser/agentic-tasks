@@ -5,6 +5,7 @@ description = "WIP demo: AI agents planning a task checklist and updating it wit
 authors = [
     { name = "Mikkaiser", email = "mikaelrsimoes19@gmail.com" }
 ]
+license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
     "openai>=3.19.2",

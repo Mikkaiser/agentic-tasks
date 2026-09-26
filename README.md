@@ -42,3 +42,7 @@ Requires Python 3.12+, [uv](https://github.com/astral-sh/uv), and an OpenAI API 
    uv run src/main.py
    ```
 3. Enter a multi-step goal at the `User:` prompt and watch the checklist get planned and completed live.
+
+## License
+
+[MIT](LICENSE)
